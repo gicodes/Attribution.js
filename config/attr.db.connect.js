@@ -12,7 +12,7 @@ const client = new MongoClient(uri, {
   }
 });
 
-let isConnected = false; // track connection state
+let isConnected = false;
 
 const connectDb = async () => {
   if (isConnected) {
@@ -28,7 +28,7 @@ const connectDb = async () => {
     return client;
   } catch (error) {
     console.error('MongoDB connection error:', error.message);
-    throw error; // Re-throw the error to handle it in the calling function
+    throw error;
   }
 };
 

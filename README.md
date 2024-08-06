@@ -4,9 +4,11 @@
 
 Attribution.js is an Express-based API designed to track and manage advertisements and sales events for e-commerce products.
 
-This application connects to a MongoDB database to store and retrieve event data efficiently.
+Advertisers commonly want to measure how many users see x Ad and then go on to click and purchase x product (conversion). Some program or application measure conversion using third-party tracking cookies, and this can be bad for user privacy (visit `https://developer.mozilla.org/en-US/docs/Web/API/Attribution_Reporting_API` to learn more about Attribution Reporting). 
 
-This project aims to provision a reliable backend service for tracking user interactions and marketing campaign effectiveness for e-commerce platforms such as `https://afrofashion.site`
+This project aims to provision a reliable backend service for tracking user interactions and marketing campaign effectiveness in a way that protects user privacy.
+
+Attribution.js connects to a MongoDB server to store and retrieve event data efficiently.
 
 ## Table Of Contents
 1.  Installation
@@ -32,36 +34,33 @@ This project aims to provision a reliable backend service for tracking user inte
 ### 1.1.  Clone the Repository
     Clone the project repository from Github:
 
-    `git clone https//github.com/gicodes/attributionJs.git`
-    `cd attribution.js`
+   `git clone https//github.com/gicodes/attributionJs.git`
+   `cd attribution.js`
 
 ### 1.2.  Install Dependencies
     Install the required Node.js package using `npm`
 
-    `npm install`
+   `npm install`
 
 
 ## (2) Configuration
 
 ### 2.1.    Environment Variables
     Create a `.env` file in the root directory of your project and configure the following environment variables:
-    `
+    
         MONGO_URI=mongodb+srv://username:password@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority
         PORT=5000
-    `
-
+    
 #### 2.2.    Database Connection
     Update `attr.db.connect.js` to ensure it uses the connection string provided in your environment variables:
-    `
-        const uri = process.env.MONGO_URI || "Your-Valid-Connection-String";
-    `
+   `const uri = process.env.MONGO_URI || "Your-Valid-Connection-String";`
 
 
 ## (3) Running The Application
 
 ### 3.1.    Start the Server
     To start the server, run:
-    `npm run dev` 
+    npm run dev 
 
     This will launch or run the serve on the specified `port 5001`.
     If you are familiar with nodemon you can skip this explanation.
@@ -76,14 +75,16 @@ This project aims to provision a reliable backend service for tracking user inte
 
 ## (4) API Endpoints 
 ### GET
-    Endpoint `api/test` Renders a message in plain text to test this connection setup.
+    Endpoint '/events' retrieves a list of events, with optional query parameters to filter the results based on user ID, campaign ID, or event type.
 
 ### POST     
-    Endpoint `/api/track` Tracks a new event e.g. A product click or sale in your app.
+    Endpoint '/events' This endpoint is used to create a new event, such as tracking a user action related to a product or advertisement.
 
 ### PUT
+    Endpoint '/events' updates an existing event specified by its ID, allowing modifications to the event's metadata or type.
 
 ### DELETE
+    Endpoint '/events' deletes a specific event by its ID.
 
 
 ## (5) Client-API Connection
@@ -96,11 +97,11 @@ This section describes how client applications, such as `afrofashion.site` can i
 1.  Base URL Configuration
     Define the base URL of the API in your client application. 
     For example;
-    `const API_BASE_URL = 'https://api.attribution.js/api'; `
+    `const API_BASE_URL = 'https://api.attribution.js/api';`
 
 2.  HTTP Client Setup
     Use a HTTP client library such as `axios` or the native `fetch` API to make requests to the `track` API endpoint. Below is an example using `fetch`
-    `*
+    
         const response = await fetch(`${API_BASE_URL}/track`, {
             method: 'POST',
             headers: {
@@ -108,12 +109,12 @@ This section describes how client applications, such as `afrofashion.site` can i
             },
             body: JSON.stringify(eventData),
         });
-    *`
+    
 
 ### 5.2. Making API Requests
 #### 5.2.1.  Tracking Events
     To track events like click or sales, send a `POST` request to the `api/track` endpoint.
-    `*
+    
         const trackEvent = async (eventData) => {
             try {
                 const response = await apiClient.post('/track', eventData);
@@ -122,11 +123,11 @@ This section describes how client applications, such as `afrofashion.site` can i
                 console.error('Error tracking event:', error.response ? error.response.data : error.message);
             }
         };
-    *`
+    
 
 #### 5.2.2. Handling Responses and Errors
     Ensure that the client handles both successful responses and potential errors when interacting with the API.
-    `*
+    
         const handleApiResponse = (response) => {
             if (response.status === 201) {
                 console.log('Success:', response.data.message);
@@ -147,7 +148,7 @@ This section describes how client applications, such as `afrofashion.site` can i
                 console.error('Error:', error.message);
             }
         };
-    *`
+    
 
 #### 5.3.3. Security Considerations
     -   CORS: 
@@ -162,8 +163,8 @@ This section describes how client applications, such as `afrofashion.site` can i
 The application includes automated tests to ensure the API works as expected.
 
 ### 6.1. Running The Tests
-    To run the tests, execute:
-    `npm test`
+    To run the tests, execute:  
+   `npm test`
 
     This will run the test suite using Mocha and Chai, testing various API endpoints and functionality.
 
@@ -182,9 +183,7 @@ To deploy this application to a production environment, follow these steps:
 
 ### 7.3.  Start the Application
     Use a process manager like `pm2` or a hosting service that manages Node,.js processes to start the app:
-    `
-        pm2 start app.js
-    `
+   `pm2 start app.js`
 
 
 ## (8) Contributing
